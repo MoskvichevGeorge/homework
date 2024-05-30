@@ -1,21 +1,26 @@
-python
-numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-primes = []
-not_primes = []
+def print_params(a=1, b='строка', c=True):
+    print(f'a: {a}, b: {b}, c: {c}')
 
-for num in numbers:
-    is_prime = True
-    if num < 2:
-        is_prime = False
-    else:
-        for i in range(2, int(num ** 0.5) + 1):
-            if num % i == 0:
-                is_prime = False
-                break
-    if is_prime:
-        primes.append(num)
-    else:
-        not_primes.append(num)
 
-print("Primes:", primes)
-print("Not Primes:", not_primes)
+print_params()
+print_params(5)
+print_params(b='новая строка')
+print_params(c=False)
+
+print_params(b=25)
+print_params(c=[1, 2, 3])
+
+
+def print_params(a=1, b='строка', c=True):
+    print(f'a: {a}, b: {b}, c: {c}')
+
+
+values_list = [10, 'новая строка', False]
+values_dict = {'a': 100, 'b': 'еще одна строка', 'c': True}
+
+print_params(*values_list)
+print_params(**values_dict)
+
+values_list_2 = [7, 'еще одна новая строка']
+
+print_params(*values_list_2, 42)
