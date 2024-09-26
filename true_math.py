@@ -1,9 +1,6 @@
-def test_function():
-    def inner_function():
-        print("я в области видимости функции test_function")
-
-    inner_function()
-
-
-inner_function()
+from math import inf
+def divide(first,second):
+    if second ==0:
+        return inf
+    return first/second
 
