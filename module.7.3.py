@@ -1,9 +1,7 @@
 import string
 
-
 class WordsFinder:
     def __init__(self, *file_names):
-
         self.file_names = file_names
 
     def get_all_words(self):
@@ -12,14 +10,15 @@ class WordsFinder:
         for file_name in self.file_names:
             try:
                 with open(file_name, 'r', encoding='utf-8') as f:
-
                     words = []
                     for line in f:
                         line = line.lower()
-                        line = line.translate(str.maketrans('', '', string.punctuation + " -"))
+                        # Убираем пунктуацию, пробелы и определенные символы
+                        line = line.translate(str.maketrans('', '', string.punctuation))
                         words.extend(line.split())
 
-                    all_words[file_name] = words
+                    # Удаляем дубликаты и сохраняем в словарь
+                    all_words[file_name] = list(set(words))  # Преобразуем в список уникальных слов
 
             except FileNotFoundError:
                 print(f"Файл {file_name} не найден.")
@@ -49,7 +48,8 @@ class WordsFinder:
 
         return result
 
+# Пример использования
 finder2 = WordsFinder('test_file.txt')
-print(finder2.get_all_words()) # Все слова
-print(finder2.find('TEXT')) # 3 слово по счёту
-print(finder2.count('teXT')) # 4 слова teXT в тексте всего
+print(finder2.get_all_words())  # Все уникальные слова
+print(finder2.find('text'))  # Индекс слова 'text'
+print(finder2.count('text'))  # Количество слов 'text' в тексте
