@@ -9,7 +9,7 @@ from crud_functions import initiate_db, add_user, is_included
 
 initiate_db()
 
-api = "7319836166:AAFUqKqS31tnP-_kAL1pldUSjXUDCtFWrqI"
+api = ""
 bot = Bot(token=api)
 dp = Dispatcher(bot, storage=MemoryStorage())
 
