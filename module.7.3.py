@@ -1,4 +1,5 @@
-import string
+import re
+
 
 class WordsFinder:
     def __init__(self, *file_names):
@@ -9,35 +10,34 @@ class WordsFinder:
 
         for file_name in self.file_names:
             try:
-                with open(file_name, 'r', encoding='utf-8') as f:
+                with open(file_name, 'r', encoding='utf-8') as file:
                     words = []
-                    for line in f:
+                    for line in file:
                         line = line.lower()
-                        # Убираем пунктуацию, пробелы и определенные символы
-                        line = line.translate(str.maketrans('', '', string.punctuation))
+                        line = re.sub(r"[',.=!?;:-]", '', line)
                         words.extend(line.split())
-
-                    # Удаляем дубликаты и сохраняем в словарь
-                    all_words[file_name] = list(set(words))  # Преобразуем в список уникальных слов
-
+                    all_words[file_name] = words
             except FileNotFoundError:
-                print(f"Файл {file_name} не найден.")
+                print(f"Файл '{file_name}' не найден.")
             except Exception as e:
-                print(f"Произошла ошибка при обработке файла {file_name}: {e}")
+                print(f"Ошибка при чтении файла '{file_name}': {e}")
 
         return all_words
 
     def find(self, word):
+        word = word.lower()
         result = {}
         all_words = self.get_all_words()
 
         for file_name, words in all_words.items():
             if word in words:
-                result[file_name] = words.index(word)
+                position = words.index(word) + 1
+                result[file_name] = position
 
         return result
 
     def count(self, word):
+        word = word.lower()
         result = {}
         all_words = self.get_all_words()
 
@@ -48,8 +48,12 @@ class WordsFinder:
 
         return result
 
-# Пример использования
-finder2 = WordsFinder('test_file.txt')
-print(finder2.get_all_words())  # Все уникальные слова
-print(finder2.find('text'))  # Индекс слова 'text'
-print(finder2.count('text'))  # Количество слов 'text' в тексте
+finder = WordsFinder('test_file.txt')
+
+print(finder.get_all_words())
+
+
+print(finder.find('TEXT'))
+
+
+print(finder.count('teXT'))
