@@ -1,0 +1,43 @@
+def introspection_info(obj):
+    info = {
+        'type': type(obj).__name__,
+        'attributes': [],
+        'methods': [],
+        'module': obj.__module__ if hasattr(obj, '__module__') else None,
+        'other_properties': {}
+    }
+
+    
+    for attr_name in dir(obj):
+        try:
+            attr_value = getattr(obj, attr_name)
+            if callable(attr_value):
+                info['methods'].append(attr_name)
+            else:
+                info['attributes'].append(attr_name)
+        except Exception:
+            continue
+
+    
+    if isinstance(obj, (int, float, str, list, tuple, dict, set)):
+        info['other_properties']['length'] = len(obj) if hasattr(obj, '__len__') else None
+    elif isinstance(obj, type):
+        info['other_properties']['bases'] = [base.__name__ for base in obj.__bases__]
+        info['other_properties']['mro'] = [cls.__name__ for cls in obj.__mro__]
+
+    return info
+
+
+number_info = introspection_info(42)
+print(number_info)
+
+
+class Example:
+    def __init__(self):
+        self.attribute = "value"
+
+    def method(self):
+        pass
+
+example_info = introspection_info(Example())
+print(example_info)
